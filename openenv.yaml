@@ -1,0 +1,19 @@
+name: job-assistant-env
+version: 1.0
+description: A real-world job application simulation environment for AI agents
+
+entry_point: env.environment:JobEnv
+
+observation_type: JobObservation
+action_type: JobAction
+reward_type: JobReward
+
+tasks:
+  - name: easy_resume
+    description: Improve resume based on job description
+
+  - name: medium_email
+    description: Write a recruiter email
+
+  - name: hard_full
+    description: Complete full job application process
