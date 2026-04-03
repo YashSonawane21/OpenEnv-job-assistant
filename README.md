@@ -78,3 +78,12 @@ Reward is continuous and reflects partial progress.
 ```bash
 pip install -r requirements.txt
 python baseline.py
+
+---
+
+## Key Features
+
+- 🔹 Multi-scenario job simulation  
+- 🔹 Dynamic reward shaping  
+- 🔹 Constraint-based action validation  
+- 🔹 Progressive task difficulty (easy → hard)
