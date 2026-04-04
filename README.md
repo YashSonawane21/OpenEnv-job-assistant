@@ -4,7 +4,6 @@ emoji: 🤖
 colorFrom: blue
 colorTo: green
 sdk: docker
-app_file: baseline.py
 pinned: false
 ---
 
@@ -72,18 +71,3 @@ Complete full job application process correctly:
 Reward is continuous and reflects partial progress.
 
 ---
-
-## Setup Instructions
-
-```bash
-pip install -r requirements.txt
-python baseline.py
-
----
-
-## Key Features
-
-- 🔹 Multi-scenario job simulation  
-- 🔹 Dynamic reward shaping  
-- 🔹 Constraint-based action validation  
-- 🔹 Progressive task difficulty (easy → hard)
