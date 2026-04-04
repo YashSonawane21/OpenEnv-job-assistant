@@ -1,15 +1,18 @@
 [project]
 name = "openenv-job-assistant"
 version = "0.1.0"
-description = "AI-powered job assistant environment for OpenEnv hackathon"
-authors = [
-    { name = "Yash Sonawane" }
-]
+description = "AI-powered job assistant environment"
+authors = [{ name = "Yash Sonawane" }]
+
 dependencies = [
     "fastapi",
     "uvicorn",
-    "pydantic"
+    "pydantic",
+    "openenv-core>=0.2.0"
 ]
+
+[project.scripts]
+server = "server.app:app"
 
 [build-system]
 requires = ["setuptools", "wheel"]
