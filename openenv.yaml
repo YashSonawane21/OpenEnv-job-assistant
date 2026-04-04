@@ -2,11 +2,7 @@ name: job-assistant-env
 version: 1.0
 description: A real-world job application simulation environment for AI agents
 
-entry_point: env.environment:JobEnv
-
-observation_type: JobObservation
-action_type: JobAction
-reward_type: JobReward
+# IMPORTANT: remove entry_point completely
 
 tasks:
   - name: easy_resume
