@@ -397,7 +397,7 @@ def startup_event():
     logger.info("")
     logger.info("✅ OpenEnv Job Assistant v2.0.0 is RUNNING")
     logger.info("")
-    logger.info("📋 View Project Info: https://yashsonawane-log-analyzer.hf.space/project-info")
+    logger.info("📋 View Project Info: https://yashs21-openenv-job-assistant.hf.space/project-info")
     logger.info("")
 
 
