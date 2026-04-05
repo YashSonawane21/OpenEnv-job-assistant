@@ -271,3 +271,16 @@ async def global_exception_handler(request, exc):
         status_code=500,
         content={"error": str(exc)}
     )
+# -------- OPENENV ENTRY POINT --------
+
+def main():
+    """
+    Entry point for OpenEnv validation.
+    Runs the FastAPI app.
+    """
+    import uvicorn
+    uvicorn.run("server.app:app", host="0.0.0.0", port=7860)
+
+
+if __name__ == "__main__":
+    main()
