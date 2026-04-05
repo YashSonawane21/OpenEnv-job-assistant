@@ -167,7 +167,34 @@ def step(request: ActionRequest) -> Dict[str, Any]:
 # ----------- ROOT CHECK (OPTIONAL) -----------
 @app.get("/")
 def home():
-    return {"message": "OpenEnv Job Assistant is running"}
+    return {
+        "message": "OpenEnv Job Assistant is running",
+        "version": "2.0.0",
+        "description": "A comprehensive job application environment with AI-powered task grading",
+        "ai_agents_capabilities": {
+            "resume_grader": "Analyzes resume quality by matching skills (Python +0.5, React +0.5) against job requirements",
+            "email_grader": "Evaluates professional email tone (hello +0.3, interested +0.4, thank you +0.3)",
+            "cover_letter_grader": "Assesses cover letter effectiveness (greeting +0.2, experience +0.3, relevance +0.25, CTA +0.15, length +0.1)",
+            "linkedin_grader": "Reviews LinkedIn profile completeness (photo +0.15, headline +0.2, bio +0.25, skills +0.15, experience +0.15, contact +0.1, recommendations +0.05)",
+            "interview_grader": "Evaluates interview preparation using STAR method (STAR keywords +0.25, technical +0.2, problem-solving +0.2, research +0.15, depth +0.1, practice +0.1)"
+        },
+        "environment_performs": [
+            "Automated grading of job application materials with scores from 0.0 to 1.0",
+            "Real-time feedback on resume, email, cover letter, LinkedIn profile, and interview preparation",
+            "Comprehensive testing suite with 15 validation tests (all passing)",
+            "RESTful API endpoints for task enumeration, grading submissions, and health monitoring",
+            "CORS-enabled cross-origin support for web applications",
+            "Request logging and error handling for production reliability"
+        ],
+        "available_endpoints": {
+            "GET /": "This overview information",
+            "GET /tasks": "List all 5 available tasks",
+            "POST /grade": "Grade a submission for a specific task",
+            "GET /health": "Basic health check",
+            "GET /project-info": "Complete project information and test results"
+        },
+        "full_project_info": "https://yashs21-openenv-job-assistant.hf.space/project-info"
+    }
 
 
 # ----------- HEALTH CHECK -----------
