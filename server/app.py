@@ -56,14 +56,14 @@ except Exception as e:
 @app.middleware("http")
 async def log_requests(request, call_next):
     start_time = time.time()
-    logger.info(f"📥 {request.method} {request.url.path}")
+    logger.info(f"REQUEST {request.method} {request.url.path}")
     try:
         response = await call_next(request)
         process_time = time.time() - start_time
-        logger.info(f"📤 {request.method} {request.url.path} - Status: {response.status_code} - Time: {process_time:.3f}s")
+        logger.info(f"RESPONSE {request.method} {request.url.path} - Status: {response.status_code} - Time: {process_time:.3f}s")
         return response
     except Exception as e:
-        logger.error(f"❌ Error: {e}", exc_info=True)
+        logger.error(f"Error processing request: {e}", exc_info=True)
         raise
 
 # -------- BASIC ROUTES --------
@@ -196,7 +196,7 @@ def reset():
         "email": "",
         "status": "not_applied"
     }
-    logger.info("🔄 State reset")
+    logger.info("State reset")
     return {"state": state}
 
 @app.post("/step")
@@ -223,7 +223,7 @@ def step(request: ActionRequest):
         else:
             reward -= 1
 
-    logger.info(f"📍 Action '{action}' executed - reward: {reward}")
+    logger.info(f"Action '{action}' executed - reward: {reward}")
 
     return {
         "state": state,
@@ -253,14 +253,14 @@ def project_info():
 @app.on_event("startup")
 def startup_event():
     logger.info("")
-    logger.info("✅ OpenEnv Job Assistant v2.0.0 is RUNNING")
+    logger.info("OpenEnv Job Assistant v2.0.0 is RUNNING")
     logger.info("")
-    logger.info("📋 View Project Info: https://yashs21-openenv-job-assistant.hf.space/project-info")
+    logger.info("View Project Info: https://yashs21-openenv-job-assistant.hf.space/project-info")
     logger.info("")
 
 @app.on_event("shutdown")
 def shutdown_event():
-    logger.info("🛑 Application shutting down")
+    logger.info("Application shutting down")
 
 # -------- GLOBAL ERROR HANDLER --------
 
