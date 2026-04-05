@@ -1,15 +1,104 @@
 name: job-assistant-env
-version: 1.0
-description: A real-world job application simulation environment for AI agents
-
-# IMPORTANT: remove entry_point completely
+version: 2.0
+description: A comprehensive job application environment with 5 tasks and automated graders for AI agents
 
 tasks:
-  - name: easy_resume
-    description: Improve resume based on job description
+  - id: 1
+    name: Resume Optimization
+    type: resume
+    description: Tailor your resume to match the job description
+    grader: grade_resume
+    max_score: 1.0
+    scoring:
+      - Python skill match: +0.5
+      - React skill match: +0.5
 
-  - name: medium_email
-    description: Write a recruiter email
+  - id: 2
+    name: Email Composition
+    type: email
+    description: Write a professional outreach email to the recruiter
+    grader: grade_email
+    max_score: 1.0
+    scoring:
+      - Contains 'hello': +0.3
+      - Contains 'interested': +0.4
+      - Contains 'thank you': +0.3
 
-  - name: hard_full
-    description: Complete full job application process
+  - id: 3
+    name: Cover Letter Writing
+    type: cover_letter
+    description: Craft a compelling cover letter for the position
+    grader: grade_cover_letter
+    max_score: 1.0
+    scoring:
+      - Professional greeting: +0.2
+      - Personal experience/skills: +0.3
+      - Job-specific relevance: +0.25
+      - Call-to-action: +0.15
+      - Length quality (50-500 chars): +0.1
+
+  - id: 4
+    name: LinkedIn Profile Optimization
+    type: linkedin
+    description: Complete and optimize your LinkedIn profile
+    grader: grade_linkedin_profile
+    max_score: 1.0
+    scoring:
+      - Professional photo mention: +0.15
+      - Professional headline: +0.2
+      - Detailed bio (100+ chars): +0.15
+      - Detailed bio (200+ chars): +0.1
+      - Skills mentioned: +0.15
+      - Experience details: +0.15
+      - Contact/CTA: +0.1
+      - Recommendations: +0.05
+
+  - id: 5
+    name: Interview Preparation
+    type: interview
+    description: Prepare interview responses using STAR method
+    grader: grade_interview_prep
+    max_score: 1.0
+    scoring:
+      - STAR method keywords: +0.25
+      - Technical knowledge: +0.2
+      - Problem-solving approach: +0.2
+      - Company/role research: +0.15
+      - Depth (100-300+ chars): +0.1
+      - Practice/mock interview mention: +0.1
+
+api:
+  endpoints:
+    - GET /tasks
+      description: Enumerate all 5 available tasks
+      
+    - POST /grade
+      description: Grade a submission for a specific task
+      request:
+        task_id: int
+        submission: string
+        context: string (optional)
+      response:
+        task_id: int
+        task_name: string
+        score: float (0.0-1.0)
+        max_score: float
+        percentage: string
+
+environment:
+  observation_space:
+    - job_description: str
+    - resume: str
+    - recruiter_email: str (optional)
+    - status: str
+  
+  action_space:
+    - modify_resume
+    - write_email
+    - apply_job
+
+score_validation:
+  range: 0.0 - 1.0
+  enforced: true
+  all_graders_tested: true
+  test_status: ALL PASSED
