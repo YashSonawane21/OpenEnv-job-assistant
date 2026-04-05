@@ -45,9 +45,68 @@ async def log_requests(request, call_next):
 # ----------- Global State -----------
 state = {}
 
-# ----------- Request Model -----------
+# ----------- Request Models -----------
 class ActionRequest(BaseModel):
     action: str
+
+
+class GradeSubmissionRequest(BaseModel):
+    task_id: int
+    submission: str
+    context: str = ""
+
+
+# ----------- Import Task Manager -----------
+try:
+    from graders.task_manager import enumerate_tasks, get_task_by_id
+    tasks_available = True
+except ImportError:
+    logger.warning("Task manager not available - tasks endpoints will be limited")
+    tasks_available = False
+
+
+# ----------- TASKS ENUMERATION ENDPOINT -----------
+@app.get("/tasks")
+async def get_tasks():
+    """Get all available tasks with descriptions"""
+    if not tasks_available:
+        return {"error": "Tasks module not available"}
+    
+    try:
+        tasks_info = enumerate_tasks()
+        logger.info(f"📋 Enumerated {tasks_info['total_tasks']} tasks")
+        return tasks_info
+    except Exception as e:
+        logger.error(f"Error enumerating tasks: {e}", exc_info=True)
+        return {"error": str(e)}
+
+
+# ----------- GRADE SUBMISSION ENDPOINT -----------
+@app.post("/grade")
+async def grade_submission(request: GradeSubmissionRequest) -> Dict[str, Any]:
+    """Grade a submission for a specific task"""
+    if not tasks_available:
+        return {"error": "Grading not available"}
+    
+    try:
+        task = get_task_by_id(request.task_id)
+        if not task:
+            logger.warning(f"⚠️ Task #{request.task_id} not found")
+            return {"error": f"Task {request.task_id} not found"}
+        
+        score = task.grade(request.submission, request.context)
+        logger.info(f"📊 Task #{request.task_id} ({task.name}): Score = {score:.2f}")
+        
+        return {
+            "task_id": request.task_id,
+            "task_name": task.name,
+            "score": score,
+            "max_score": task.max_score,
+            "percentage": f"{(score/task.max_score)*100:.1f}%"
+        }
+    except Exception as e:
+        logger.error(f"Error grading submission: {e}", exc_info=True)
+        return {"error": str(e)}
 
 
 # ----------- RESET ENDPOINT -----------
