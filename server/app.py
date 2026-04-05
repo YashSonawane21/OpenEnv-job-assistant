@@ -6,6 +6,10 @@ from typing import Dict, Any
 import logging
 import sys
 import time
+import os
+
+# Add parent directory to path so we can import graders
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Configure logging
 logging.basicConfig(
