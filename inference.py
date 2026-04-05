@@ -1,19 +1,46 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Dict, Any
 import logging
 import sys
+import time
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    stream=sys.stdout
+    stream=sys.stdout,
+    force=True
 )
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
+app = FastAPI(title="OpenEnv Job Assistant", version="1.0.0")
+
+# Add CORS middleware to allow cross-origin requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# Add request logging middleware
+@app.middleware("http")
+async def log_requests(request, call_next):
+    start_time = time.time()
+    logger.info(f"📥 {request.method} {request.url.path}")
+    try:
+        response = await call_next(request)
+        process_time = time.time() - start_time
+        logger.info(f"📤 {request.method} {request.url.path} - Status: {response.status_code} - Time: {process_time:.3f}s")
+        return response
+    except Exception as e:
+        logger.error(f"❌ Error processing request: {e}", exc_info=True)
+        raise
 
 # ----------- Global State -----------
 state = {}
@@ -91,20 +118,29 @@ async def health_check():
     return {"status": "healthy", "state_initialized": bool(state)}
 
 
+# ----------- STATUS ENDPOINT -----------
+@app.get("/status")
+async def status():
+    """Detailed status endpoint"""
+    return {
+        "name": "OpenEnv Job Assistant",
+        "status": "running",
+        "version": "1.0.0",
+        "timestamp": time.time(),
+        "state": state
+    }
+
+
 # ----------- STARTUP/SHUTDOWN EVENTS -----------
 @app.on_event("startup")
-async def startup_event():
-    logger.info("Application starting up...")
-    try:
-        logger.info("Startup complete!")
-    except Exception as e:
-        logger.error(f"Error during startup: {e}", exc_info=True)
-        raise
+def startup_event():
+    logger.info("🚀 Application starting up...")
+    logger.info("✅ Startup complete!")
 
 
 @app.on_event("shutdown")
-async def shutdown_event():
-    logger.info("Application shutting down...")
+def shutdown_event():
+    logger.info("🛑 Application shutting down...")
 
 
 # ----------- GLOBAL EXCEPTION HANDLER -----------
