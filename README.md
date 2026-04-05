@@ -7,58 +7,132 @@ sdk: docker
 pinned: false
 ---
 
-# OpenEnv Job Assistant Environment
+# OpenEnv Job Assistant
 
-## Description
-This project simulates a real-world job application workflow where an AI agent learns how to:
-- Improve resumes
-- Write recruiter emails
-- Apply for jobs
+A comprehensive FastAPI-based job application environment with AI-powered task grading, deployed on Hugging Face Spaces.
 
----
+## Features
 
-## Real-World Scenarios
+- **5 Comprehensive Tasks**: Resume optimization, email composition, cover letter writing, LinkedIn profiling, and interview preparation
+- **Automated Graders**: Each task includes intelligent scoring algorithms that return grades in the 0.0-1.0 range
+- **RESTful API**: Complete web service with endpoints for task enumeration, submission grading, and project information
+- **Production Ready**: CORS-enabled, request logging, error handling, and health monitoring
+- **Beautiful Web Interface**: Clean HTML interface for easy access to all project information
 
-This environment simulates multiple job roles:
+## API Endpoints
 
-- Software Engineer (Python + React)
-- Data Analyst (SQL + Excel)
-- Backend Developer (Node.js APIs)
+- `GET /` - Project overview with detailed information about AI capabilities
+- `GET /tasks` - List all 5 available tasks with descriptions
+- `POST /grade` - Grade a submission for a specific task
+- `GET /health` - Health check endpoint
+- `GET /project-info` - Complete project information and test results
 
-The agent must adapt its actions depending on job requirements.
+## AI Agent Capabilities
 
----
+### Resume Grader
+Analyzes resume quality by matching skills against job requirements:
+- Python skill match: +0.5 points
+- React skill match: +0.5 points
 
-## Environment Design
+### Email Grader
+Evaluates professional email tone:
+- Contains greeting: +0.3 points
+- Shows interest: +0.4 points
+- Includes thank you: +0.3 points
 
-### Observation Space
-- job_description
-- resume
-- recruiter_email
-- application status
+### Cover Letter Grader
+Assesses cover letter effectiveness:
+- Professional greeting: +0.2 points
+- Experience/skills mentioned: +0.3 points
+- Job relevance: +0.25 points
+- Call-to-action: +0.15 points
+- Length quality: +0.1 points
 
-### Action Space
-- modify_resume
-- write_email
-- apply_job
+### LinkedIn Grader
+Reviews LinkedIn profile completeness:
+- Professional photo: +0.15 points
+- Compelling headline: +0.2 points
+- Detailed bio: +0.25 points
+- Skills listed: +0.15 points
+- Experience details: +0.15 points
+- Contact information: +0.1 points
+- Recommendations: +0.05 points
 
----
+### Interview Grader
+Evaluates interview preparation using STAR method:
+- STAR method keywords: +0.25 points
+- Technical knowledge: +0.2 points
+- Problem-solving approach: +0.2 points
+- Company research: +0.15 points
+- Response depth: +0.1 points
+- Practice/mock interview: +0.1 points
 
-## Tasks & Graders
+## Local Development
 
-The environment provides **5 comprehensive tasks** with automated graders that provide scores in the **0.0–1.0 range**:
-
-### 1. Resume Optimization
-**Goal:** Tailor your resume to match the job description  
-**Grader:** `grade_resume(resume, job_description)`  
-**Scoring:**
-- Python skill match: +0.5
-- React skill match: +0.5
-
-**Example:**
 ```bash
-curl -X POST https://yashsonawane-log-analyzer.hf.space/grade \
-  -H 'Content-Type: application/json' \
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+uvicorn inference:app --host 0.0.0.0 --port 7860
+
+# Or run the server version
+uvicorn server.app:app --host 0.0.0.0 --port 7860
+```
+
+## Testing
+
+Run the comprehensive test suite:
+
+```bash
+python test_graders.py
+```
+
+All 15 tests should pass, validating that graders return scores in the correct 0.0-1.0 range.
+
+## Deployment
+
+The application is configured for deployment on Hugging Face Spaces with Docker:
+
+- **Main App**: `inference.py` (primary deployment)
+- **Server App**: `server/app.py` (alternative deployment)
+- **Container**: Python 3.10 with FastAPI and Uvicorn
+- **Port**: 7860 (HF Spaces standard)
+
+## Project Structure
+
+```
+openenv-job-assistant/
+├── inference.py              # Main FastAPI application
+├── server/
+│   ├── app.py               # Alternative server deployment
+│   └── __init__.py          # Python package marker
+├── graders/
+│   ├── task_manager.py      # Task enumeration and management
+│   ├── resume_grader.py     # Resume scoring logic
+│   ├── email_grader.py      # Email scoring logic
+│   ├── cover_letter_grader.py # Cover letter scoring logic
+│   ├── linkedin_grader.py   # LinkedIn scoring logic
+│   └── interview_grader.py  # Interview scoring logic
+├── test_graders.py          # Comprehensive test suite
+├── requirements.txt          # Python dependencies
+├── Dockerfile               # Container configuration
+├── pyproject.toml           # Python project metadata
+├── openenv.yaml            # Project configuration
+└── README.md               # This documentation
+```
+
+## API Usage Examples
+
+### Get All Tasks
+```bash
+curl https://yashs21-openenv-job-assistant.hf.space/tasks
+```
+
+### Grade a Resume
+```bash
+curl -X POST https://yashs21-openenv-job-assistant.hf.space/grade \
+  -H "Content-Type: application/json" \
   -d '{
     "task_id": 1,
     "submission": "Python developer with React expertise",
@@ -66,78 +140,23 @@ curl -X POST https://yashsonawane-log-analyzer.hf.space/grade \
   }'
 ```
 
-### 2. Email Composition
-**Goal:** Write a professional outreach email to the recruiter  
-**Grader:** `grade_email(email)`  
-**Scoring:**
-- Contains "hello": +0.3
-- Contains "interested": +0.4
-- Contains "thank you": +0.3
+### Get Project Information
+```bash
+curl https://yashs21-openenv-job-assistant.hf.space/project-info
+```
 
-### 3. Cover Letter Writing (NEW)
-**Goal:** Craft a compelling cover letter for the position  
-**Grader:** `grade_cover_letter(cover_letter, job_description)`  
-**Scoring:**
-- Professional greeting: +0.2
-- Personal experience/skills: +0.3
-- Job-specific relevance: +0.25
-- Call-to-action: +0.15
-- Length quality (50-500 chars): +0.1
+## Built With
 
-### 4. LinkedIn Profile Optimization (NEW)
-**Goal:** Complete and optimize your LinkedIn profile  
-**Grader:** `grade_linkedin_profile(profile_data)`  
-**Scoring:**
-- Professional photo mention: +0.15
-- Professional headline: +0.2
-- Detailed bio: +0.25 (progressive: 100+ chars = +0.15, 200+ chars = +0.1)
-- Skills mentioned: +0.15
-- Experience details: +0.15
-- Contact/CTA: +0.1
-- Recommendations: +0.05
-
-### 5. Interview Preparation (NEW)
-**Goal:** Prepare interview responses using STAR method  
-**Grader:** `grade_interview_prep(preparation_notes, job_description)`  
-**Scoring:**
-- STAR method keywords: +0.25
-- Technical knowledge: +0.2
-- Problem-solving approach: +0.2
-- Company/role research: +0.15
-- Depth: +0.1 (progressive)
-- Practice/mock interview mention: +0.1
+- **FastAPI**: Modern Python web framework
+- **Pydantic**: Data validation and serialization
+- **Uvicorn**: ASGI server for production deployment
+- **Docker**: Containerization for consistent deployment
 
 ---
 
-## Reward System
-
-- Skill matching → positive reward
-- Writing email → reward
-- Applying correctly → reward
-- Applying without email → penalty
-- Invalid actions → penalty
-
-Reward is continuous and reflects partial progress.
-
----
-
-## API Endpoints
-
-### Enumerate Tasks
-**GET** `/tasks`
-
-Lists all 5 available tasks with descriptions and max scores.
-
-**Response:**
-```json
-{
-  "total_tasks": 5,
-  "tasks": [
-    {
-      "id": 1,
-      "name": "Resume Optimization",
-      "type": "resume",
-      "description": "Tailor your resume to match the job description",
+**Version**: 2.0.0
+**Deployment**: Hugging Face Spaces
+**License**: MIT
       "max_score": 1.0
     },
     ...

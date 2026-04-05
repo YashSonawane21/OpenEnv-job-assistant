@@ -7,8 +7,7 @@ authors = [{ name = "Yash Sonawane" }]
 dependencies = [
     "fastapi",
     "uvicorn",
-    "pydantic",
-    "openenv-core>=0.2.0"
+    "pydantic"
 ]
 
 [project.scripts]
