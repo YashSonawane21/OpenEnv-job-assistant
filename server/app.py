@@ -88,11 +88,11 @@ def home():
     </head>
     <body>
         <div class="status">
-            <h1>✅ OpenEnv Job Assistant v2.0.0 is Running</h1>
+            <h1>OpenEnv Job Assistant v2.0.0 is Running</h1>
             <p><strong>Description:</strong> A comprehensive job application environment with AI-powered task grading</p>
         </div>
 
-        <h2>🤖 AI Agent Capabilities</h2>
+        <h2>AI Agent Capabilities</h2>
         <div class="capability">
             <strong>Resume Grader:</strong> Analyzes resume quality by matching skills (Python +0.5, React +0.5) against job requirements
         </div>
@@ -109,7 +109,7 @@ def home():
             <strong>Interview Grader:</strong> Evaluates interview preparation using STAR method (STAR keywords +0.25, technical +0.2, problem-solving +0.2, research +0.15, depth +0.1, practice +0.1)
         </div>
 
-        <h2>⚙️ Environment Capabilities</h2>
+        <h2>Environment Capabilities</h2>
         <ul>
             <li>Automated grading of job application materials with scores from 0.0 to 1.0</li>
             <li>Real-time feedback on resume, email, cover letter, LinkedIn profile, and interview preparation</li>
@@ -119,14 +119,14 @@ def home():
             <li>Request logging and error handling for production reliability</li>
         </ul>
 
-        <h2>🔗 Available API Endpoints</h2>
+        <h2>Available API Endpoints</h2>
         <div class="endpoint"><strong>GET /</strong> - This overview information</div>
         <div class="endpoint"><strong>GET /tasks</strong> - List all 5 available tasks</div>
         <div class="endpoint"><strong>POST /grade</strong> - Grade a submission for a specific task</div>
         <div class="endpoint"><strong>GET /health</strong> - Basic health check</div>
         <div class="endpoint"><strong>GET /project-info</strong> - Complete project information and test results</div>
 
-        <h2>📊 Full Project Information</h2>
+        <h2>Full Project Information</h2>
         <p>View complete project details, test results, and API documentation:</p>
         <p><a href="https://yashs21-openenv-job-assistant.hf.space/project-info" target="_blank">https://yashs21-openenv-job-assistant.hf.space/project-info</a></p>
 
