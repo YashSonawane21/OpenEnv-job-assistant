@@ -1,12 +1,3 @@
----
-title: OpenEnv Job Assistant
-emoji: 🤖
-colorFrom: blue
-colorTo: green
-sdk: docker
-pinned: false
----
-
 # OpenEnv Job Assistant Environment
 
 ## Description
