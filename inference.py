@@ -597,8 +597,8 @@ def emit_structured_output() -> int:
         score = task.grade(submission, context)
 
         print(f"[START] task={task_name}", flush=True)
-        print(f"[STEP] step=1 reward={score:.2f}", flush=True)
-        print(f"[END] task={task_name} score={score:.2f} steps=1", flush=True)
+        print(f"[STEP] step=1 reward={score:.3f}", flush=True)
+        print(f"[END] task={task_name} score={score:.3f} steps=1", flush=True)
 
     return 0
 

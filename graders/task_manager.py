@@ -7,6 +7,9 @@ from enum import Enum
 from dataclasses import dataclass
 from typing import Callable, Dict, Any
 
+MIN_SCORE = 0.01
+MAX_SCORE = 0.99
+
 
 class TaskType(Enum):
     """Supported task types."""
@@ -42,9 +45,10 @@ class Task:
             score = self.grader(submission, context)
         else:
             score = self.grader(submission)
-        
-        # Ensure score is in valid range
-        return max(0.0, min(float(score), self.max_score))
+
+        # Keep validator-facing scores strictly inside (0, 1).
+        bounded_score = max(0.0, min(float(score), self.max_score))
+        return max(MIN_SCORE, min(bounded_score, MAX_SCORE))
 
 
 # Import all graders
