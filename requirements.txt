@@ -1,6 +1,6 @@
-fastapi
-uvicorn
-pydantic
-python-dotenv
-openai
-openenv-core>=0.2.0
+fastapi==0.135.3
+uvicorn==0.43.0
+pydantic==2.12.5
+python-dotenv==1.2.2
+openai==2.30.0
+openenv-core==0.2.3
